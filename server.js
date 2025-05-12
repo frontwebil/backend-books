@@ -1,6 +1,4 @@
 require("dotenv").config();
-
-const cors = require("cors");
 const express = require("express");
 const mongoose = require("mongoose");
 const booksRoute = require("./routes/booksRoute");
@@ -8,12 +6,6 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
-
-app.use(
-  cors({
-    origin: "http://localhost:5174", // або '*' на час розробки
-  })
-);
 
 app.use((req, res, next) => {
   console.log(req.path, req.method);
