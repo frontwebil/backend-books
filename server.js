@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const cors = require("cors")
 const mongoose = require("mongoose");
 const booksRoute = require("./routes/booksRoute");
 const app = express();
@@ -11,6 +12,8 @@ app.use((req, res, next) => {
   console.log(req.path, req.method);
   next();
 });
+
+app.use(cors()); // просто тимчасово для локальної розробки
 
 app.use("/api/books", booksRoute);
 
