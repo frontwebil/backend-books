@@ -1,44 +1,20 @@
 const express = require("express");
-const Book = require("../models/Book");
-const mongoose = require("mongoose");
+
+const {
+  getBooks,
+  createBook,
+  deleteBook,
+  updateBook,
+} = require("../controllers/booksControllers");
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
-  try {
-    const books = await Book.find();
-    res.status(200).json({ books: books });
-  } catch (error) {
-    res.status(404).json({ error: error.message });
-  }
-});
+router.get("/", getBooks);
 
-router.post("/", async (req, res) => {
-  const { title } = req.body;
-  try {
-    const book = await Book.create({
-      title,
-    });
-    res.status(200).json(book);
-  } catch (error) {
-    res.status(404).json({ error: error.message });
-  }
-});
+router.post("/", createBook);
 
-router.delete("/:id", async (req, res) => {
-  const { id } = req.params;
+router.delete("/:id", deleteBook);
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "Книжки не знайдено" });
-  }
-
-  const book = await Book.findByIdAndDelete({ _id: id });
-
-  if (!book) {
-    return res.status(404).json({ error: "Книжки не знайдено" });
-  }
-
-  res.status(200).json({ message: "Книжку видалено", book });
-});
+router.patch("/:id", updateBook);
 
 module.exports = router;
