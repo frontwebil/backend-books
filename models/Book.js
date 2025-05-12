@@ -8,19 +8,19 @@ const bookSchema = new mongoose.Schema(
     },
     author: {
       type: String,
-      required: false,
+      required: true,
     },
     description: {
       type: String,
-      required: false,
+      required: true,
     },
     genre: {
       type: String,
-      required: false,
+      required: true,
     },
     pages: {
       type: String,
-      required: false,
+      required: true,
     },
   },
   { timestamps: true }
