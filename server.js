@@ -1,6 +1,6 @@
 require("dotenv").config();
-import cors from "cors";
 
+const cors = require("cors");
 const express = require("express");
 const mongoose = require("mongoose");
 const booksRoute = require("./routes/booksRoute");
