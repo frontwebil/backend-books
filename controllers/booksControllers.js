@@ -13,18 +13,9 @@ const getBooks = async (req, res) => {
 };
 
 const createBook = async (req, res) => {
-  const { title, author, description, genre, pages } = req.body;
-  const file = req.file;
-
   try {
-    console.log("BODY:", req.body);
-    console.log("FILE:", req.file);
-    if (!file) {
-      return res.status(400).json({ error: "Зображення не завантажено" });
-    }
-
-    const result = await cloudinary.uploader.upload(file.path);
-    fs.unlinkSync(file.path); // видаляємо файл з локального диска
+    const { title, author, description, genre, pages } = req.body;
+    const imageURL = req.file ? req.file.path : "";  // multer-cloudinary додає path з URL
 
     const book = await Book.create({
       title,
@@ -32,7 +23,7 @@ const createBook = async (req, res) => {
       description,
       genre,
       pages,
-      imageURL: result.secure_url, // використовуємо URL з Cloudinary
+      imageURL,
     });
 
     res.status(200).json(book);
