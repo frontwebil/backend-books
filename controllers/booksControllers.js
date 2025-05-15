@@ -17,6 +17,8 @@ const createBook = async (req, res) => {
   const file = req.file;
 
   try {
+    console.log("BODY:", req.body);
+    console.log("FILE:", req.file);
     if (!file) {
       return res.status(400).json({ error: "Зображення не завантажено" });
     }
