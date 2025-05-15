@@ -1,5 +1,7 @@
 const Book = require("../models/Book");
 const mongoose = require("mongoose");
+const fs = require("fs");
+const cloudinary = require("../utils/cloudinary");
 
 const getBooks = async (req, res) => {
   try {
@@ -11,19 +13,29 @@ const getBooks = async (req, res) => {
 };
 
 const createBook = async (req, res) => {
-  const { title, author, description, genre, pages, imageURL } = req.body;
+  const { title, author, description, genre, pages } = req.body;
+  const file = req.file;
+
   try {
+    if (!file) {
+      return res.status(400).json({ error: "Зображення не завантажено" });
+    }
+
+    const result = await cloudinary.uploader.upload(file.path);
+    fs.unlinkSync(file.path); // видаляємо файл з локального диска
+
     const book = await Book.create({
       title,
       author,
       description,
       genre,
       pages,
-      imageURL,
+      imageURL: result.secure_url, // використовуємо URL з Cloudinary
     });
+
     res.status(200).json(book);
   } catch (error) {
-    res.status(404).json({ error: error.message });
+    res.status(500).json({ error: error.message });
   }
 };
 

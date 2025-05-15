@@ -1,5 +1,6 @@
 const express = require("express");
-
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" }); // тимчасова папка
 const {
   getBooks,
   createBook,
@@ -11,7 +12,7 @@ const router = express.Router();
 
 router.get("/", getBooks);
 
-router.post("/", createBook);
+router.post("/", upload.single("image"), createBook);
 
 router.delete("/:id", deleteBook);
 
