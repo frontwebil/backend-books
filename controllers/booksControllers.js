@@ -1,7 +1,5 @@
 const Book = require("../models/Book");
 const mongoose = require("mongoose");
-const fs = require("fs");
-const cloudinary = require("../utils/cloudinary");
 
 const getBooks = async (req, res) => {
   try {
@@ -14,21 +12,23 @@ const getBooks = async (req, res) => {
 
 const createBook = async (req, res) => {
   try {
-    const { title, author, description, genre, pages } = req.body;
-    const imageURL = req.file ? req.file.path : "";  // multer-cloudinary додає path з URL
+    const { title, author, description, genre, pages, imageURL } = req.body;
 
-    const book = await Book.create({
+    const newBook = new Book({
       title,
       author,
       description,
       genre,
       pages,
-      imageURL,
+      imageURL: req.file ? req.file.path : imageURL, // Cloudinary image або посилання
     });
 
-    res.status(200).json(book);
+    await newBook.save();
+
+    res.status(200).json(newBook);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Помилка при додаванні книги:", error);
+    res.status(500).json({ error: "Помилка сервера" });
   }
 };
 
@@ -55,16 +55,35 @@ const updateBook = async (req, res) => {
     return res.status(404).json({ error: "Книжки не знайдено" });
   }
 
-  const book = await Book.findOneAndUpdate(
-    { _id: id },
-    {
-      ...req.body,
+  try {
+    const { title, author, description, genre, pages, imageURL } = req.body;
+
+    const updatedFields = {
+      title,
+      author,
+      description,
+      genre,
+      pages,
+      imageURL: req.file ? req.file.path : imageURL,
+    };
+
+    const updatedBook = await Book.findOneAndUpdate(
+      { _id: id },
+      updatedFields,
+      { new: true }
+    );
+
+    if (!updatedBook) {
+      return res.status(404).json({ error: "Книжки не знайдено" });
     }
-  );
-  if (!book) {
-    return res.status(404).json({ error: "Книжки не знайдено" });
+
+    res
+      .status(200)
+      .json({ message: "Дані про книжку змінено", book: updatedBook });
+  } catch (error) {
+    console.error("Помилка при оновленні книги:", error);
+    res.status(500).json({ error: "Помилка сервера" });
   }
-  res.status(200).json({ message: "Данні про книжку зміненні", book });
 };
 
 module.exports = {
