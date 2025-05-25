@@ -12,7 +12,7 @@ const getBooks = async (req, res) => {
 
 const createBook = async (req, res) => {
   try {
-    const { title, author, description, genre, pages, imageURL } = req.body;
+    const { title, author, description, genre, pages, imageURL , price } = req.body;
 
     const newBook = new Book({
       title,
@@ -20,6 +20,7 @@ const createBook = async (req, res) => {
       description,
       genre,
       pages,
+      price,
       imageURL: req.file ? req.file.path : imageURL, // Cloudinary image або посилання
     });
 
@@ -56,7 +57,7 @@ const updateBook = async (req, res) => {
   }
 
   try {
-    const { title, author, description, genre, pages, imageURL } = req.body;
+    const { title, author, description, genre, pages, imageURL , price } = req.body;
 
     const updatedFields = {
       title,
@@ -64,6 +65,7 @@ const updateBook = async (req, res) => {
       description,
       genre,
       pages,
+      price,
       imageURL: req.file ? req.file.path : imageURL,
     };
 
