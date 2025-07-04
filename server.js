@@ -14,7 +14,7 @@ app.use((req, res, next) => {
   next();
 });
 
-const allowedOrigins = ["https://admin-page-books-7usu9bt4l-ilyas-projects-0d4b022c.vercel.app", "http://localhost:5173"];
+const allowedOrigins = ["https://admin-page-books.vercel.app/", "http://localhost:5173"];
 
 app.use(
   cors({
