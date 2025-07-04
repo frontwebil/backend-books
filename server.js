@@ -1,8 +1,9 @@
 require("dotenv").config();
 const express = require("express");
-const cors = require("cors")
+const cors = require("cors");
 const mongoose = require("mongoose");
 const booksRoute = require("./routes/booksRoute");
+const checkApiKey = require("./middleware/chekApiKey");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -15,7 +16,7 @@ app.use((req, res, next) => {
 
 app.use(cors()); // просто тимчасово для локальної розробки
 
-app.use("/api/books", booksRoute);
+app.use("/api/books", checkApiKey , booksRoute);
 
 mongoose
   .connect(process.env.MONGO_URL)
