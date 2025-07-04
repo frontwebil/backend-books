@@ -14,9 +14,22 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(cors()); // просто тимчасово для локальної розробки
+const allowedOrigins = ["https://admin-page-books-7usu9bt4l-ilyas-projects-0d4b022c.vercel.app", "http://localhost:5173"];
 
-app.use("/api/books", checkApiKey , booksRoute);
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("⛔ CORS: Доступ заборонено"));
+      }
+    },
+    credentials: true,
+  })
+);
+
+app.use("/api/books", checkApiKey, booksRoute);
 
 mongoose
   .connect(process.env.MONGO_URL)
