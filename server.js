@@ -3,7 +3,8 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const booksRoute = require("./routes/booksRoute");
-const checkApiKey = require("./middleware/chekApiKey");
+const orderRoute = require("./routes/ordersRoute")
+const checkApiKey = require("./middleware/checkApiKey");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -14,7 +15,12 @@ app.use((req, res, next) => {
   next();
 });
 
-const allowedOrigins = ["https://admin-page-books.vercel.app", "http://localhost:5173"];
+const allowedOrigins = [
+  "https://admin-page-books.vercel.app",
+  "https://book-store-psi-amber.vercel.app/",
+  "http://localhost:5173",
+  "http://localhost:5174",
+];
 
 app.use(
   cors({
@@ -29,7 +35,8 @@ app.use(
   })
 );
 
-app.use("/api/books", checkApiKey, booksRoute);
+app.use("/api/books", booksRoute);
+app.use("/api/orders", orderRoute);
 
 mongoose
   .connect(process.env.MONGO_URL)

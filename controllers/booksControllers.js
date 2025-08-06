@@ -12,7 +12,8 @@ const getBooks = async (req, res) => {
 
 const createBook = async (req, res) => {
   try {
-    const { title, author, description, genre, pages, imageURL , price } = req.body;
+    const { title, author, description, genre, pages, imageURL, price } =
+      req.body;
 
     const newBook = new Book({
       title,
@@ -57,7 +58,8 @@ const updateBook = async (req, res) => {
   }
 
   try {
-    const { title, author, description, genre, pages, imageURL , price } = req.body;
+    const { title, author, description, genre, pages, imageURL, price } =
+      req.body;
 
     const updatedFields = {
       title,
