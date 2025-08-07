@@ -17,7 +17,7 @@ app.use((req, res, next) => {
 
 const allowedOrigins = [
   "https://admin-page-books.vercel.app",
-  "https://book-store-psi-amber.vercel.app/",
+  "https://book-store-psi-amber.vercel.app",
   "http://localhost:5173",
   "http://localhost:5174",
 ];
