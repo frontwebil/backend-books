@@ -3,7 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const booksRoute = require("./routes/booksRoute");
-const orderRoute = require("./routes/ordersRoute")
+const orderRoute = require("./routes/ordersRoute");
 const checkApiKey = require("./middleware/checkApiKey");
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -35,8 +35,8 @@ app.use(
   })
 );
 
-app.use("/api/books", booksRoute);
-app.use("/api/orders", orderRoute);
+app.use("/api/books", checkApiKey, booksRoute);
+app.use("/api/orders", checkApiKey, orderRoute);
 
 mongoose
   .connect(process.env.MONGO_URL)
